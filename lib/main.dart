@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app_sec_project/user_map.dart';
 
 import 'camera.dart';
+import 'constants.dart';
 import 'create_account.dart';
 import 'home.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Constants.kToDark,
       ),
       home: const MyHomePage(title: 'Home Page'),
     );
