@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'filter.dart';
+
 class UserMap extends StatefulWidget {
   @override
   _UserMap createState() => _UserMap();
@@ -25,6 +27,12 @@ class _UserMap extends State<UserMap> {
                 tooltip: 'Filter Map Display',
                 onPressed: () {
                   // Display the popup modal with filtering
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return Filter();
+                    },
+                  );
                 },
               ),
             ],
