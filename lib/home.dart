@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_sec_project/user_map.dart';
 
 import 'constants.dart';
+import 'create_account.dart';
+import 'map_cam_navigator.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -22,18 +23,20 @@ class _Home extends State<Home> {
 
   _Home() {}
 
-  _submitForm(){
+  _submitForm() {
     // Check if the correct username and password were entered
-    if(_username == _correctUsername && _password == _correctPassword ){
+
+    // TODO: GET THE CORRECT USERNAME AND CORRECT PASSWORD FROM LOCAL STORAGE
+    if (_username == _correctUsername && _password == _correctPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => UserMap()),
+        MaterialPageRoute(builder: (context) => MapCamNavigator()),
       );
-    }
-    else{
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('The username and/or password entered was inccorect.')),
+            content:
+                Text('The username and/or password entered was inccorect.')),
       );
     }
   }
@@ -75,7 +78,8 @@ class _Home extends State<Home> {
                                                   border:
                                                       UnderlineInputBorder(),
                                                   labelText: 'Username'),
-                                              maxLength: Constants.maxUsernameLength,
+                                              maxLength:
+                                                  Constants.maxUsernameLength,
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -90,9 +94,10 @@ class _Home extends State<Home> {
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                  UnderlineInputBorder(),
+                                                      UnderlineInputBorder(),
                                                   labelText: 'Password'),
-                                              maxLength: Constants.maxPasswordLength,
+                                              maxLength:
+                                                  Constants.maxPasswordLength,
                                               obscureText: true,
                                               validator: (value) {
                                                 if (value == null ||
@@ -106,23 +111,44 @@ class _Home extends State<Home> {
                                               },
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16.0),
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   // Validate returns true if the form is valid, or false otherwise.
-                                                  if (_formKey.currentState!.validate()) {
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
                                                     _submitForm();
-                                                  }
-                                                  else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
                                                       const SnackBar(
-                                                          content: Text('Please fill in all fields.')),
+                                                          content: Text(
+                                                              'Please fill in all fields.')),
                                                     );
                                                   }
                                                 },
                                                 child: const Text('Submit'),
                                               ),
                                             ),
+                                            InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CreateAccount()),
+                                                  );
+                                                },
+                                                child: const Text(
+                                                    'Create a new account',
+                                                    style: TextStyle(
+                                                      color: Constants.color1,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                    )))
                                           ]))))
                         ])))));
   }

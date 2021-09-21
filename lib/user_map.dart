@@ -13,13 +13,24 @@ class _UserMap extends State<UserMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('User Map'),
-        ),
-        body: const Padding(
-            padding: const EdgeInsets.all(50.0), child: const Text('User Map')
-        )
-    );
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: const Text('Map'),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.filter_alt_outlined),
+                tooltip: 'Filter Map Display',
+                onPressed: () {
+                  // Display the popup modal with filtering
+                },
+              ),
+            ],
+          ),
+          body: const Padding(
+              padding: EdgeInsets.all(50.0), child: Text('User Map')),
+        ));
   }
 }

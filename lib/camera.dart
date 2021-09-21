@@ -13,13 +13,25 @@ class _Camera extends State<Camera> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async => false,
+    child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text('Camera'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
         body: const Padding(
             padding: EdgeInsets.all(50.0), child: Text('Camera')
         )
-    );
+    ));
   }
 }
