@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app_sec_project/user_map.dart';
 
-import 'camera.dart';
 import 'constants.dart';
 import 'create_account.dart';
 import 'home.dart';
+import 'map_cam_navigator.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,17 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   OutlinedButton(onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Camera()),
+                      MaterialPageRoute(builder: (context) => MapCamNavigator()),
                     );
-                  }, child: const Text('Camera'),
-                  ),
-                  const SizedBox(height: 30),
-                  OutlinedButton(onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => UserMap()),
-                    );
-                  }, child: const Text('User Map'),
+
+                  }, child: const Text('Camera/Map'),
                   ),
             ])));
   }
