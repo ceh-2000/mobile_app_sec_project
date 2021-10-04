@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
@@ -5,7 +6,10 @@ import 'create_account.dart';
 import 'home.dart';
 import 'map_cam_navigator.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first; // get this to camera.dart
   runApp(const MyApp());
 }
 

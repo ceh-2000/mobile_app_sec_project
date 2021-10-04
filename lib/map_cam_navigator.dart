@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app_sec_project/user_map.dart';
 
@@ -7,6 +8,10 @@ import 'constants.dart';
 /// Current intermediate landing page to decide which page user wants to view
 /// (login/out, menteeScrollView, profileView) depending on BottomNavigationView
 class MapCamNavigator extends StatefulWidget {
+  const MapCamNavigator({
+    Key? key
+  }) : super(key: key);
+
   @override
   _MapCamNavigator createState() => _MapCamNavigator();
 }
@@ -15,7 +20,7 @@ class MapCamNavigator extends StatefulWidget {
 class _MapCamNavigator extends State<MapCamNavigator> {
   // List of pages we could show
   final List<Widget> _widgetOptions = <Widget>[
-    Camera(),
+    Camera(camera: ),
     UserMap(),
   ];
 
