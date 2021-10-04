@@ -9,8 +9,11 @@ import 'constants.dart';
 /// (login/out, menteeScrollView, profileView) depending on BottomNavigationView
 class MapCamNavigator extends StatefulWidget {
   const MapCamNavigator({
-    Key? key
+    Key? key,
+    required this.cameras
   }) : super(key: key);
+
+  final List<CameraDescription> cameras;
 
   @override
   _MapCamNavigator createState() => _MapCamNavigator();
@@ -18,13 +21,7 @@ class MapCamNavigator extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MapCamNavigator extends State<MapCamNavigator> {
-  // List of pages we could show
-  final List<Widget> _widgetOptions = <Widget>[
-    Camera(camera: ),
-    UserMap(),
-  ];
-
-  // Index of which view to show from list of widget options
+    // Index of which view to show from list of widget options
   int _selectedIndex = 0;
 
   late PageController _pageController; // = PageController();
@@ -53,6 +50,11 @@ class _MapCamNavigator extends State<MapCamNavigator> {
 
   @override
   Widget build(BuildContext context) {
+    // List of pages we could show
+    final List<Widget> _widgetOptions = <Widget>[
+      Camera(cameras: widget.cameras),
+      UserMap(),
+    ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(

@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 class Camera extends StatefulWidget {
   const Camera({
     Key? key,
-    required this.camera
+    required this.cameras
   }) : super(key: key);
 
-  final CameraDescription camera;
+  final List<CameraDescription> cameras;
 
   @override
   CameraState createState() => CameraState();
@@ -24,7 +24,7 @@ class CameraState extends State<Camera> {
   void initState() {
     super.initState();
     _controller = CameraController(
-      firstCamera,
+      widget.cameras.first,
       ResolutionPreset.medium,
     );
     _initializeControllerFuture = _controller.initialize();
