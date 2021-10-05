@@ -48,9 +48,7 @@ class _Filter extends State<Filter> {
             ),
           ),
           Padding(
-            padding:
-            const EdgeInsets.symmetric(
-                vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context, _selectedItem);

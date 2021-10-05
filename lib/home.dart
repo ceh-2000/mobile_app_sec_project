@@ -35,7 +35,8 @@ class _Home extends State<Home> {
     if (_username == _correctUsername && _password == _correctPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MapCamNavigator(cameras: widget.cameras)),
+        MaterialPageRoute(
+            builder: (context) => MapCamNavigator(cameras: widget.cameras)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

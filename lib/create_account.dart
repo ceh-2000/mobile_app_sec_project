@@ -55,15 +55,16 @@ class _CreateAccount extends State<CreateAccount> {
                                       key: _formKey,
                                       child: Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                              CrossAxisAlignment.center,
                                           children: [
                                             // TODO: Create stipulations on username (i.e. 8 characters, letters and numbers, symbols)
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                  UnderlineInputBorder(),
+                                                      UnderlineInputBorder(),
                                                   labelText: 'Username'),
-                                              maxLength: Constants.maxUsernameLength,
+                                              maxLength:
+                                                  Constants.maxUsernameLength,
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -79,9 +80,10 @@ class _CreateAccount extends State<CreateAccount> {
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                  UnderlineInputBorder(),
+                                                      UnderlineInputBorder(),
                                                   labelText: 'Password'),
-                                              maxLength: Constants.maxPasswordLength,
+                                              maxLength:
+                                                  Constants.maxPasswordLength,
                                               obscureText: true,
                                               validator: (value) {
                                                 if (value == null ||
@@ -97,9 +99,11 @@ class _CreateAccount extends State<CreateAccount> {
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                  UnderlineInputBorder(),
-                                                  labelText: 'Confirm Password'),
-                                              maxLength: Constants.maxPasswordLength,
+                                                      UnderlineInputBorder(),
+                                                  labelText:
+                                                      'Confirm Password'),
+                                              maxLength:
+                                                  Constants.maxPasswordLength,
                                               obscureText: true,
                                               validator: (value) {
                                                 if (value == null ||
@@ -113,17 +117,22 @@ class _CreateAccount extends State<CreateAccount> {
                                               },
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 16.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 16.0),
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   // Validate returns true if the form is valid, or false otherwise.
-                                                  if (_formKey.currentState!.validate()) {
+                                                  if (_formKey.currentState!
+                                                      .validate()) {
                                                     _submitForm();
-                                                  }
-                                                  else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                  } else {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
                                                       const SnackBar(
-                                                          content: Text('Please fill in all fields.')),
+                                                          content: Text(
+                                                              'Please fill in all fields.')),
                                                     );
                                                   }
                                                 },

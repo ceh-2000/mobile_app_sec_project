@@ -8,10 +8,7 @@ import 'constants.dart';
 /// Current intermediate landing page to decide which page user wants to view
 /// (login/out, menteeScrollView, profileView) depending on BottomNavigationView
 class MapCamNavigator extends StatefulWidget {
-  const MapCamNavigator({
-    Key? key,
-    required this.cameras
-  }) : super(key: key);
+  const MapCamNavigator({Key? key, required this.cameras}) : super(key: key);
 
   final List<CameraDescription> cameras;
 
@@ -21,7 +18,7 @@ class MapCamNavigator extends StatefulWidget {
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MapCamNavigator extends State<MapCamNavigator> {
-    // Index of which view to show from list of widget options
+  // Index of which view to show from list of widget options
   int _selectedIndex = 0;
 
   late PageController _pageController; // = PageController();

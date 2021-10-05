@@ -4,11 +4,9 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+// credit: https://flutter.dev/docs/cookbook/plugins/picture-using-camera
 class Camera extends StatefulWidget {
-  const Camera({
-    Key? key,
-    required this.cameras
-  }) : super(key: key);
+  const Camera({Key? key, required this.cameras}) : super(key: key);
 
   final List<CameraDescription> cameras;
 
@@ -48,8 +46,7 @@ class CameraState extends State<Camera> {
             ),
           ],
         ),
-        body:
-        FutureBuilder<void>(
+        body: FutureBuilder<void>(
           future: _initializeControllerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -80,12 +77,11 @@ class CameraState extends State<Camera> {
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>
-                      DisplayPictureScreen(
-                        // Pass the automatically generated path to
-                        // the DisplayPictureScreen widget.
-                        imagePath: image.path,
-                      ),
+                  builder: (context) => DisplayPictureScreen(
+                    // Pass the automatically generated path to
+                    // the DisplayPictureScreen widget.
+                    imagePath: image.path,
+                  ),
                 ),
               );
             } catch (e) {
@@ -104,7 +100,7 @@ class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
 
   const DisplayPictureScreen({Key? key, required this.imagePath})
-    : super(key:key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +110,3 @@ class DisplayPictureScreen extends StatelessWidget {
     );
   }
 }
-
-
-
