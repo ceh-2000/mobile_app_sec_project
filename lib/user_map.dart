@@ -27,6 +27,9 @@ class _UserMap extends State<UserMap> {
                 tooltip: 'Filter Map Display',
                 onPressed: () {
                   // Display the popup modal with filtering
+
+                  // TODO: Pass an initial state to the map (or pull from user preferences on device)
+                  // TODO: Get back what the user selected and render the updated map with new markers
                   showDialog(
                     context: context,
                     builder: (BuildContext dialogContext) {
