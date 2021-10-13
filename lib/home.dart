@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
@@ -5,6 +6,10 @@ import 'create_account.dart';
 import 'map_cam_navigator.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key, required this.cameras}) : super(key: key);
+
+  final List<CameraDescription> cameras;
+
   @override
   _Home createState() => _Home();
 }
@@ -30,7 +35,8 @@ class _Home extends State<Home> {
     if (_username == _correctUsername && _password == _correctPassword) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MapCamNavigator()),
+        MaterialPageRoute(
+            builder: (context) => MapCamNavigator(cameras: widget.cameras)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

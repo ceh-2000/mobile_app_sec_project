@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app_sec_project/user_map.dart';
 
@@ -7,18 +8,16 @@ import 'constants.dart';
 /// Current intermediate landing page to decide which page user wants to view
 /// (login/out, menteeScrollView, profileView) depending on BottomNavigationView
 class MapCamNavigator extends StatefulWidget {
+  const MapCamNavigator({Key? key, required this.cameras}) : super(key: key);
+
+  final List<CameraDescription> cameras;
+
   @override
   _MapCamNavigator createState() => _MapCamNavigator();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MapCamNavigator extends State<MapCamNavigator> {
-  // List of pages we could show
-  final List<Widget> _widgetOptions = <Widget>[
-    Camera(),
-    UserMap(),
-  ];
-
   // Index of which view to show from list of widget options
   int _selectedIndex = 0;
 
@@ -48,6 +47,11 @@ class _MapCamNavigator extends State<MapCamNavigator> {
 
   @override
   Widget build(BuildContext context) {
+    // List of pages we could show
+    final List<Widget> _widgetOptions = <Widget>[
+      Camera(cameras: widget.cameras),
+      UserMap(),
+    ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(

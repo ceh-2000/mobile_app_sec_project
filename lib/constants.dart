@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-
   //////////////////// Colors
 
   // Use this website to generate other color palette themes: http://mcg.mbitson.com/#!?mcgpalette0=%235da2d6
@@ -36,11 +35,8 @@ class Constants {
   static const color2 = Color(0xff4a148c);
   static const color2Dark = Color(0xff12005e);
 
-
   //////////////////// Numbers
 
   static const maxUsernameLength = 50;
   static const maxPasswordLength = 50;
-
-
 }
