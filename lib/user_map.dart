@@ -1,5 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import 'constants.dart';
 import 'filter.dart';
 
 class UserMap extends StatefulWidget {
@@ -8,10 +12,26 @@ class UserMap extends StatefulWidget {
 }
 
 class _UserMap extends State<UserMap> {
+  // This will be the reference to the map
+  late GoogleMapController _controller;
+
+  // Set the initial center of the map --> maybe pull the user's location for this
+  final CameraPosition _kInitialPosition =
+      CameraPosition(target: LatLng(-33.852, 151.211), zoom: 11.0);
+
+  final CameraPosition _kLocation = const CameraPosition(
+      target: LatLng(37.2707, -76.7075),
+      zoom: 11.0
+      );
+
   @override
   void initState() {}
 
   _UserMap() {}
+
+  Future<void> _goToMyLocation() async {
+    _controller.animateCamera(CameraUpdate.newCameraPosition(_kLocation));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +60,18 @@ class _UserMap extends State<UserMap> {
               ),
             ],
           ),
-          body: const Padding(
-              padding: EdgeInsets.all(50.0), child: Text('User Map')),
+          body: GoogleMap(
+              mapType: MapType.hybrid,
+              onMapCreated: (GoogleMapController controller) {
+                _controller = controller;
+              },
+              initialCameraPosition: _kInitialPosition),
+          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+          floatingActionButton: FloatingActionButton(
+            onPressed: _goToMyLocation,
+            child: const Icon(Icons.home),
+            backgroundColor: Constants.color2,
+          ),
         ));
   }
 }

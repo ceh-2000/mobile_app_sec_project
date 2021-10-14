@@ -21,27 +21,14 @@ class _MapCamNavigator extends State<MapCamNavigator> {
   // Index of which view to show from list of widget options
   int _selectedIndex = 0;
 
-  late PageController _pageController; // = PageController();
-
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-
-      // Animated transition from one screen to the next
-      _pageController.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.easeOut);
     });
   }
 
@@ -49,28 +36,24 @@ class _MapCamNavigator extends State<MapCamNavigator> {
   Widget build(BuildContext context) {
     // List of pages we could show
     final List<Widget> _widgetOptions = <Widget>[
-      Camera(cameras: widget.cameras),
       UserMap(),
+      Camera(cameras: widget.cameras),
     ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
-          child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() => _selectedIndex = index);
-              },
-              children: _widgetOptions)),
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Constants.color1Light,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt),
-            label: 'Camera',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.map_outlined),
             label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt),
+            label: 'Camera',
           ),
         ],
         currentIndex: _selectedIndex,

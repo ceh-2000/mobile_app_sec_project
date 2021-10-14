@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app_sec_project/user_map.dart';
 
 import 'constants.dart';
 import 'create_account.dart';
@@ -82,6 +83,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: const Text('Camera/Map'),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => UserMap()),
+                  );
+                },
+                child: const Text('Just Map'),
               ),
             ])));
   }

@@ -58,12 +58,12 @@ class CameraState extends State<Camera> {
             }
           },
         ),
-        // const Padding(
-        //     padding: EdgeInsets.all(50.0), child: Text('Camera')
-        // ),
+
+
         floatingActionButton: FloatingActionButton(
           // Provide an onPressed callback.
           onPressed: () async {
+
             // Take the Picture in a try / catch block. If anything goes wrong,
             // catch the error.
             try {
@@ -85,6 +85,7 @@ class CameraState extends State<Camera> {
                 ),
               );
             } catch (e) {
+
               // If an error occurs, log the error to the console.
               print(e);
             }
