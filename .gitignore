@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+ios/Runner/keys.plist
 
 # IntelliJ related
 *.iml

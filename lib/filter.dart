@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Filter extends StatefulWidget {
+  // TODO: Accept input of initial value to display
+
   @override
   _Filter createState() => _Filter();
 }

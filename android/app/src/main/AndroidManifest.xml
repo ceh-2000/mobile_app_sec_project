@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mobile_app_sec_project">
-   <application
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <application
         android:label="Follow the Money"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -37,5 +38,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+       <!--       Google maps API key-->
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="${MAPS_API_KEY}"/>
     </application>
 </manifest>
