@@ -1,15 +1,24 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app_sec_project/user_map.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+import 'user_map.dart';
 import 'constants.dart';
 import 'create_account.dart';
 import 'home.dart';
 import 'map_cam_navigator.dart';
 
 void main() async {
+  // Bind before initializing
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase app
+  await Firebase.initializeApp();
+
+  // Get the cameras
   final cameras = await availableCameras();
+
+  // Start rendering the UI
   runApp(MyApp(cameras: cameras)); // MyApp used to be const here
 }
 
@@ -21,12 +30,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Follow the Money',
       theme: ThemeData(
         primarySwatch: Constants.kToDark,
       ),
       home: MyHomePage(
-          title: 'Home Page', cameras: cameras), // MyHomePage used to be const
+          title: 'Home', cameras: cameras), // MyHomePage used to be const
     );
   }
 }
