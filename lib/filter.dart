@@ -1,23 +1,46 @@
 import 'package:flutter/material.dart';
 
 class Filter extends StatefulWidget {
-  // TODO: Accept input of initial value to display
+  final String docIdsSelected;
+
+  Filter({Key? key, required this.docIdsSelected}) : super(key: key);
 
   @override
-  _Filter createState() => _Filter();
+  _Filter createState() => _Filter(docIdsSelected);
 }
 
 class _Filter extends State<Filter> {
   // Title of our alert dialog
-  String _title = 'Choose what to show on map';
+  final String _title = 'Choose a bill to display on the map:';
 
   // String that corresponds to what we should mark on the map
-  String? _selectedItem = 'all_bills';
+  String? _selectedItem = '12345';
+
+  late Set<String> _docIdsAll = {'12345', '78910'};
 
   @override
   void initState() {}
 
-  _Filter() {}
+  _Filter(docIdsSelected) {
+    // TODO: Pull docIdsAll from local storage
+
+    _selectedItem = docIdsSelected;
+  }
+
+  Widget _getListTile(String docId) {
+    return ListTile(
+      title: Text(docId),
+      leading: Radio<String>(
+        value: docId,
+        groupValue: _selectedItem,
+        onChanged: (String? value) {
+          setState(() {
+            _selectedItem = value;
+          });
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +48,28 @@ class _Filter extends State<Filter> {
         title: Text(_title),
         content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           // TODO: Pull these options from storage on the user's device
-          ListTile(
-            title: const Text('All bills ever entered'),
-            leading: Radio<String>(
-              value: 'all_bills',
-              groupValue: _selectedItem,
-              onChanged: (String? value) {
-                setState(() {
-                  _selectedItem = value;
-                });
-              },
-            ),
-          ),
-          ListTile(
-            title: const Text('Bill with ID: ABCDE'),
-            leading: Radio<String>(
-              value: 'ABCDE',
-              groupValue: _selectedItem,
-              onChanged: (String? value) {
-                setState(() {
-                  _selectedItem = value;
-                });
-              },
-            ),
+          // ListView(
+          //     children: _docIdsAll.map((String docId) {
+          //   return Center(child: _getListTile(docId));
+          // }).toList()),
+          Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children:
+                  _docIdsAll.map((bill) => ListTile(
+                    title: Text(bill),
+                    leading: Radio<String>(
+                      value: bill,
+                      groupValue: _selectedItem,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _selectedItem = value;
+                        });
+                      },
+                    ),
+                  )).toList()
+              )
+            )
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
