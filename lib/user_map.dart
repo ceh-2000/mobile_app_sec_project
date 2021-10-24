@@ -63,6 +63,7 @@ class _UserMap extends State<UserMap> {
     for(int i = 0; i < latLongPoints.length; i++){
       MarkerId markerId = MarkerId('Marker $i');
 
+      // TODO: Get custom pins to show up correctly
       if(_pinLocationIcon != null){
         markers.add(Marker(
           markerId: markerId,
