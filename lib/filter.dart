@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app_sec_project/services/local_storage.dart';
 
 class Filter extends StatefulWidget {
   final String docIdsSelected;
@@ -16,31 +17,23 @@ class _Filter extends State<Filter> {
   // String that corresponds to what we should mark on the map
   String? _selectedItem = '12345';
 
-  late Set<String> _docIdsAll = {'12345', '78910'};
+  late List<String> _docIdsAll = ['12345', '78910', '54321'];
 
   @override
   void initState() {}
 
   _Filter(docIdsSelected) {
     // TODO: Pull docIdsAll from local storage
+    readContent().then((String bills){
+      setState(() {
+        print(bills);
+        _docIdsAll = [bills];
+      });
+    });
 
     _selectedItem = docIdsSelected;
   }
 
-  Widget _getListTile(String docId) {
-    return ListTile(
-      title: Text(docId),
-      leading: Radio<String>(
-        value: docId,
-        groupValue: _selectedItem,
-        onChanged: (String? value) {
-          setState(() {
-            _selectedItem = value;
-          });
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
