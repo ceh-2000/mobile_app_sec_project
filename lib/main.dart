@@ -21,7 +21,9 @@ void main() async {
 
   // Write something to our bill file for testing purposes
   // TODO: Write this bill id when a picture of the bill is taken and the ID is extracted
-  writeContent('54321');
+  await writeContent('');
+  await writeBillContent(Constants.testUsername, '54321');
+  await writeBillContent(Constants.testUsername, '12345');
 
   // Start rendering the UI
   runApp(MyApp(cameras: cameras)); // MyApp used to be const here
