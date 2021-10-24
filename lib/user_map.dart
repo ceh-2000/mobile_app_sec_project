@@ -16,14 +16,14 @@ class UserMap extends StatefulWidget {
 
 class _UserMap extends State<UserMap> {
   // Get data to display from Firestore
-  // TODO: Only pull the data for the bills that should be shown on map
   final Stream<QuerySnapshot> _billsStream =
       FirebaseFirestore.instance.collection('bills').snapshots();
 
   // This will be the reference to the map
   late GoogleMapController _controller;
 
-  // Set the initial center of the map --> maybe pull the user's location for this
+  // Set the initial center of the map as the user's position
+  // TODO: Pull the user's location and set the initial position as such
   final CameraPosition _kLocation =
       const CameraPosition(target: LatLng(37.2707, -76.7075), zoom: 11.0);
 
@@ -31,7 +31,7 @@ class _UserMap extends State<UserMap> {
 
   late Set<Marker> _mapMarkers;
 
-  String _docIdSelected = '54321';
+  String _docIdSelected = '';
 
   @override
   void initState() {
@@ -132,6 +132,7 @@ class _UserMap extends State<UserMap> {
                       icon: const Icon(Icons.filter_alt_outlined),
                       tooltip: 'Filter Map Display',
                       onPressed: () async {
+
                         // Display the popup modal with filtering
                         String newBillId = await showDialog(
                           context: context,

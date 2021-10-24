@@ -16,7 +16,7 @@ class _Filter extends State<Filter> {
   final String _title = 'Choose a bill to display on the map:';
 
   // String that corresponds to what we should mark on the map
-  String? _selectedItem = '54321';
+  String? _selectedItem = '';
 
   late List<String> _docIdsAll = [];
 
@@ -28,7 +28,7 @@ class _Filter extends State<Filter> {
     getListOfBills(Constants.testUsername).then((List<String> bills){
       setState(() {
         _docIdsAll = bills;
-        _selectedItem = bills[bills.length-1];
+        _selectedItem = docIdsSelected;
       });
     });
 
