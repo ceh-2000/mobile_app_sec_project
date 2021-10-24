@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile_app_sec_project/services/local_storage.dart';
 
 import 'user_map.dart';
 import 'constants.dart';
@@ -17,6 +18,12 @@ void main() async {
 
   // Get the cameras
   final cameras = await availableCameras();
+
+  // Write something to our bill file for testing purposes
+  // TODO: Write this bill id when a picture of the bill is taken and the ID is extracted
+  await writeContent('');
+  await writeBillContent(Constants.testUsername, '54321');
+  await writeBillContent(Constants.testUsername, '12345');
 
   // Start rendering the UI
   runApp(MyApp(cameras: cameras)); // MyApp used to be const here

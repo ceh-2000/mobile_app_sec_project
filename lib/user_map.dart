@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'constants.dart';
 import 'filter.dart';
+import 'package:mobile_app_sec_project/services/local_storage.dart';
 
 class UserMap extends StatefulWidget {
   const UserMap({Key? key}) : super(key: key);
@@ -16,26 +16,32 @@ class UserMap extends StatefulWidget {
 
 class _UserMap extends State<UserMap> {
   // Get data to display from Firestore
-  // TODO: Only pull the data for the bills that should be shown on map
   final Stream<QuerySnapshot> _billsStream =
       FirebaseFirestore.instance.collection('bills').snapshots();
 
   // This will be the reference to the map
   late GoogleMapController _controller;
 
-  // Set the initial center of the map --> maybe pull the user's location for this
+  // Set the initial center of the map as the user's position
+  // TODO: Pull the user's location and set the initial position as such
   final CameraPosition _kLocation =
       const CameraPosition(target: LatLng(37.2707, -76.7075), zoom: 11.0);
 
   BitmapDescriptor? _pinLocationIcon;
 
-  final Set<String> _docIdsAll = {'12345'};
-  final String _docIdsSelected = '12345';
+  late Set<Marker> _mapMarkers;
+
+  String _docIdSelected = '';
 
   @override
   void initState() {
     super.initState();
     setCustomMapPin();
+    getListOfBills(Constants.testUsername).then((List<String> bills){
+      setState(() {
+        _docIdSelected = bills[bills.length-1];
+      });
+    });
   }
 
   void setCustomMapPin() async {
@@ -49,8 +55,7 @@ class _UserMap extends State<UserMap> {
     List<dynamic> geopoints = [];
 
     snapshot.data!.docs.forEach((doc) {
-      _docIdsAll.add(doc.id);
-      if (_docIdsSelected == doc.id) {
+      if (_docIdSelected == doc.id) {
         geopoints = doc['bill_id'];
       }
     });
@@ -106,7 +111,7 @@ class _UserMap extends State<UserMap> {
                           tooltip: 'Filter Map Display',
                           onPressed: () {
                             // TODO: Add a toast that says that filter results
-                            //  are still loading
+                            // are still loading
                           },
                         ),
                       ],
@@ -116,7 +121,7 @@ class _UserMap extends State<UserMap> {
                             strokeWidth: 5.0, color: Constants.color1)));
               }
 
-              Set<Marker> mapMarkers = _createMarkerList(snapshot);
+              _mapMarkers = _createMarkerList(snapshot);
 
               return Scaffold(
                 appBar: AppBar(
@@ -126,24 +131,26 @@ class _UserMap extends State<UserMap> {
                     IconButton(
                       icon: const Icon(Icons.filter_alt_outlined),
                       tooltip: 'Filter Map Display',
-                      onPressed: () {
-                        // Display the popup modal with filtering
+                      onPressed: () async {
 
-                        // TODO: Pass an initial state to the map (or pull from user preferences on device)
-                        // TODO: Get back what the user selected and render the updated map with new markers
-                        showDialog(
+                        // Display the popup modal with filtering
+                        String newBillId = await showDialog(
                           context: context,
                           builder: (BuildContext dialogContext) {
                             return Filter(
-                                docIdsSelected: _docIdsSelected);
+                                docIdsSelected: _docIdSelected);
                           },
                         );
+                        setState(() {
+                          _docIdSelected = newBillId;
+                          _mapMarkers = _createMarkerList(snapshot);
+                        });
                       },
                     ),
                   ],
                 ),
                 body: GoogleMap(
-                    markers: mapMarkers,
+                    markers: _mapMarkers,
                     mapType: MapType.hybrid,
                     onMapCreated: (GoogleMapController controller) {
                       _controller = controller;
@@ -154,59 +161,4 @@ class _UserMap extends State<UserMap> {
               );
             }));
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return WillPopScope(
-  //       onWillPop: () async => false,
-  //       child: Scaffold(
-  //         appBar: AppBar(
-  //           automaticallyImplyLeading: false,
-  //           title: const Text('Map'),
-  //           actions: <Widget>[
-  //             IconButton(
-  //               icon: const Icon(Icons.filter_alt_outlined),
-  //               tooltip: 'Filter Map Display',
-  //               onPressed: () {
-  //                 // Display the popup modal with filtering
-  //
-  //                 // TODO: Pass an initial state to the map (or pull from user preferences on device)
-  //                 // TODO: Get back what the user selected and render the updated map with new markers
-  //                 showDialog(
-  //                   context: context,
-  //                   builder: (BuildContext dialogContext) {
-  //                     return Filter(docIdsAll: _docIdsAll, docIdsSelected: _docIdsSelected);
-  //                   },
-  //                 );
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //         body: StreamBuilder<QuerySnapshot>(
-  //             stream: _billsStream,
-  //             builder: (BuildContext context,
-  //                 AsyncSnapshot<QuerySnapshot> snapshot) {
-  //               if (snapshot.hasError) {
-  //                 return Text('Something went wrong');
-  //               }
-  //
-  //               if (snapshot.connectionState == ConnectionState.waiting) {
-  //                 return Center(
-  //                     child: CircularProgressIndicator(
-  //                         strokeWidth: 5.0, color: Constants.color1));
-  //               }
-  //
-  //               Set<Marker> mapMarkers = _createMarkerList(snapshot);
-  //
-  //               return GoogleMap(
-  //                   markers: mapMarkers,
-  //                   mapType: MapType.hybrid,
-  //                   onMapCreated: (GoogleMapController controller) {
-  //                     _controller = controller;
-  //                   },
-  //                   initialCameraPosition: _kLocation);
-  //             }),
-  //         floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-  //       ));
-  // }
 }
