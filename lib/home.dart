@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'constants.dart';
 import 'create_account.dart';
@@ -15,7 +16,6 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> {
-  // Create global form key
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
@@ -23,27 +23,49 @@ class _Home extends State<Home> {
   String _correctUsername = 'test';
   String _correctPassword = 'test';
 
+  late FirebaseAuth _auth;
+
   @override
-  void initState() {}
+  void initState() {
+     _auth = FirebaseAuth.instance;
+  }
 
-  _Home() {}
+  // Subscribe to get up-to-date auth changes
+  void subscribeToAuthChanges(){
+    _auth.authStateChanges()
+        .listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
 
-  _submitForm() {
+  _submitForm() async {
     // Check if the correct username and password were entered
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _username,
+          password: _password
+      );
 
-    // TODO: GET THE CORRECT USERNAME AND CORRECT PASSWORD FROM LOCAL STORAGE
-    if (_username == _correctUsername && _password == _correctPassword) {
+      print('Hi');
+
+
+      // If this succeeds, user's account is created AND user is logged in
       Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => MapCamNavigator(cameras: widget.cameras)),
       );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content:
-                Text('The username and/or password entered was inccorect.')),
-      );
+    } on FirebaseAuthException catch (e) {
+      print('hi'+e.code);
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
     }
   }
 
@@ -77,15 +99,15 @@ class _Home extends State<Home> {
                                       key: _formKey,
                                       child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                           children: [
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                      UnderlineInputBorder(),
+                                                  UnderlineInputBorder(),
                                                   labelText: 'Username'),
                                               maxLength:
-                                                  Constants.maxUsernameLength,
+                                              Constants.maxUsernameLength,
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -100,10 +122,10 @@ class _Home extends State<Home> {
                                             TextFormField(
                                               decoration: const InputDecoration(
                                                   border:
-                                                      UnderlineInputBorder(),
+                                                  UnderlineInputBorder(),
                                                   labelText: 'Password'),
                                               maxLength:
-                                                  Constants.maxPasswordLength,
+                                              Constants.maxPasswordLength,
                                               obscureText: true,
                                               validator: (value) {
                                                 if (value == null ||
@@ -118,8 +140,8 @@ class _Home extends State<Home> {
                                             ),
                                             Padding(
                                               padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 16.0),
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 16.0),
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   // Validate returns true if the form is valid, or false otherwise.
@@ -128,7 +150,7 @@ class _Home extends State<Home> {
                                                     _submitForm();
                                                   } else {
                                                     ScaffoldMessenger.of(
-                                                            context)
+                                                        context)
                                                         .showSnackBar(
                                                       const SnackBar(
                                                           content: Text(
@@ -145,7 +167,7 @@ class _Home extends State<Home> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            CreateAccount()),
+                                                            CreateAccount(cameras: widget.cameras)),
                                                   );
                                                 },
                                                 child: const Text(
