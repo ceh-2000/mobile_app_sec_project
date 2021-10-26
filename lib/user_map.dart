@@ -36,18 +36,11 @@ class _UserMap extends State<UserMap> {
   @override
   void initState() {
     super.initState();
-    setCustomMapPin();
     getListOfBills(Constants.testUsername).then((List<String> bills){
       setState(() {
         _docIdSelected = bills[bills.length-1];
       });
     });
-  }
-
-  void setCustomMapPin() async {
-    _pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/destination_map_marker.png');
   }
 
   // Once we have the data from Firebase, create a list of markers to go on our map
