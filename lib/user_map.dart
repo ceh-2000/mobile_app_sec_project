@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:mobile_app_sec_project/services/user_location.dart';
 
 import 'constants.dart';
 import 'filter.dart';
@@ -24,8 +26,8 @@ class _UserMap extends State<UserMap> {
 
   // Set the initial center of the map as the user's position
   // TODO: Pull the user's location and set the initial position as such
-  final CameraPosition _kLocation =
-      const CameraPosition(target: LatLng(37.2707, -76.7075), zoom: 11.0);
+  CameraPosition _kLocation =
+      const CameraPosition(target: LatLng(37.2711, -76.7163), zoom: 11.0);
 
   BitmapDescriptor? _pinLocationIcon;
 
@@ -81,6 +83,23 @@ class _UserMap extends State<UserMap> {
     return markers;
   }
 
+  // Change the camera's position to center on the user's location
+  Future<void> _setUserLocation() async {
+    LocationData? loc = await getUserLocation();
+    if(loc != null){
+      double? lat = loc.latitude;
+      double? lon = loc.longitude;
+      if(lat != null && lon != null){
+        print('User\'s position: '+lat.toString()+', '+lon.toString());
+        CameraPosition newPos = CameraPosition(target: LatLng(lat, lon), zoom: 11.0);
+        _controller.animateCamera(CameraUpdate.newCameraPosition(newPos));
+        setState(() {
+          _kLocation = newPos;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -103,8 +122,7 @@ class _UserMap extends State<UserMap> {
                           icon: const Icon(Icons.filter_alt_outlined),
                           tooltip: 'Filter Map Display',
                           onPressed: () {
-                            // TODO: Add a toast that says that filter results
-                            // are still loading
+                            // TODO: Add a toast that says that filter results are still loading
                           },
                         ),
                       ],
@@ -147,8 +165,15 @@ class _UserMap extends State<UserMap> {
                       _controller = controller;
                     },
                     initialCameraPosition: _kLocation),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.startFloat,
+                floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+                floatingActionButton: FloatingActionButton(
+                  onPressed: (){
+                    _setUserLocation();
+                  },
+                  child: const Icon(Icons.home),
+                  backgroundColor: Constants.color2,
+                  tooltip: 'Recenter on your location.',
+                ),
               );
             }));
   }

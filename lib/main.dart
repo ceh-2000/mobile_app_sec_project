@@ -91,15 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: const Text('Camera/Map'),
               ),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserMap()),
-                  );
-                },
-                child: const Text('Just Map'),
-              ),
             ])));
   }
 }
