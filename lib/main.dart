@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobile_app_sec_project/services/local_storage.dart';
@@ -77,16 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 },
                 child: const Text('Home'),
-              ),
-              const SizedBox(height: 30),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateAccount()),
-                  );
-                },
-                child: const Text('Create Account'),
               ),
               const SizedBox(height: 30),
               OutlinedButton(

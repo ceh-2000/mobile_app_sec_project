@@ -38,7 +38,7 @@ class _UserMap extends State<UserMap> {
     super.initState();
     getListOfBills(Constants.testUsername).then((List<String> bills){
       setState(() {
-        _docIdSelected = bills[bills.length-1];
+        _docIdSelected = bills[bills.length - 1];
       });
     });
   }
@@ -125,13 +125,11 @@ class _UserMap extends State<UserMap> {
                       icon: const Icon(Icons.filter_alt_outlined),
                       tooltip: 'Filter Map Display',
                       onPressed: () async {
-
                         // Display the popup modal with filtering
                         String newBillId = await showDialog(
                           context: context,
                           builder: (BuildContext dialogContext) {
-                            return Filter(
-                                docIdsSelected: _docIdSelected);
+                            return Filter(docIdsSelected: _docIdSelected);
                           },
                         );
                         setState(() {

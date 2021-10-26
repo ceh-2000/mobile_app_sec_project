@@ -1,8 +1,15 @@
+import 'package:camera/camera.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'map_cam_navigator.dart';
 
 import 'constants.dart';
 
 class CreateAccount extends StatefulWidget {
+  const CreateAccount({Key? key, required this.cameras}) : super(key: key);
+
+  final List<CameraDescription> cameras;
+
   @override
   _CreateAccount createState() => _CreateAccount();
 }
@@ -14,17 +21,45 @@ class _CreateAccount extends State<CreateAccount> {
   String _password = '';
   String _passwordConfirm = '';
 
+
   @override
-  void initState() {}
+  void initState() {
+  }
+
 
   _CreateAccount() {}
 
-  _submitForm() {
+  _submitForm() async {
     // Check if the correct username and password were entered
     if (_password == _passwordConfirm) {
-      // TODO: STORE THE NEWLY CREATED USERNAME AND PASSWORD COMBINATION ON THE DEVICE
+      // Create a new account with Firebase authentication
+      try {
+        FirebaseAuth auth = FirebaseAuth.instance;
 
-      Navigator.pop(context);
+        UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+                email: _username, password: _password);
+
+        // If this succeeds, user's account is created AND user is logged in
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MapCamNavigator(cameras: widget.cameras)),
+        );
+      } on FirebaseAuthException catch (e) {
+        print('hELLLLOOO'+e.toString());
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('The password provided is too weak.')),
+          );
+        } else if (e.code == 'email-already-in-use') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('The account already exists for that email.')),
+          );
+        }
+      } catch (e) {
+        print(e);
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('The password entries don\'t match.')),
