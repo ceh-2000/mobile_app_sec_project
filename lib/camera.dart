@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_vision/google_ml_vision.dart';
 
 // credit: https://flutter.dev/docs/cookbook/plugins/picture-using-camera
 class Camera extends StatefulWidget {
@@ -74,13 +75,20 @@ class CameraState extends State<Camera> {
               // where it was saved.
               final image = await _controller.takePicture();
 
+              // Attempt to scan image for text
+              final GoogleVisionImage visionImage = GoogleVisionImage.fromFilePath(image.path);
+              final TextRecognizer textRecognizer = GoogleVision.instance.textRecognizer();
+              final VisionText visionText = await textRecognizer.processImage(visionImage);
+
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => DisplayPictureScreen(
                     // Pass the automatically generated path to
                     // the DisplayPictureScreen widget.
+                    // Pass the image text as well
                     imagePath: image.path,
+                    imageText: visionText,
                   ),
                 ),
               );
@@ -99,15 +107,16 @@ class CameraState extends State<Camera> {
 
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
+  final VisionText imageText;
 
-  const DisplayPictureScreen({Key? key, required this.imagePath})
+  const DisplayPictureScreen({Key? key, required this.imagePath, required this.imageText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Display the Picture')),
-      body: Image.file(File(imagePath)),
+      body: Column(children: [Image.file(File(imagePath)), Text(imageText.blocks.length.toString())]),
     );
   }
 }
