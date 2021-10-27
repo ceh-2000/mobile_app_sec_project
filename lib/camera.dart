@@ -82,22 +82,17 @@ class CameraState extends State<Camera> {
 
               // Extract text
               String imageText = recognisedText.text;
-              // for (TextBlock block in recognisedText.blocks) {
-              //   final Rect rect = block.rect;
-              //   final List<Offset> cornerPoints = block.cornerPoints;
-              //   final String text = block.text;
-              //   final List<String> languages = block.recognizedLanguages;
-              //
-              //   for (TextLine line in block.lines) {
-              //     // Same getters as TextBlock
-              //     for (TextElement element in line.elements) {
-              //       // Same getters as TextBlock
-              //     }
-              //   }
-              // }
+              RegExp exp = RegExp(r"[A-NP-Y]?[A-L]\s?\d{8}\s?[A-NP-Y]?"); // identify bill serial number https://www.moneyfactory.gov/resources/serialnumbers.html
+              Iterable<RegExpMatch> matches = exp.allMatches(imageText); // source https://stackoverflow.com/questions/27545081/best-way-to-get-all-substrings-matching-a-regexp-in-dart
+              String longest = "";
+              matches.forEach((match) => ((match.group(0) ?? "").length > longest.length) ? longest = (match.group(0) ?? "") : null); // store the longest segment of matched text
+              if (longest == "") {
+                longest = "Serial number not found"; // message for if serial not found
+              }
+              String matchingText = longest.replaceAll(' ', ''); // strip white space for consistency across scans
 
-              // close at some point
-              // textDetector.close();
+              // save resources
+              textDetector.close();
 
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
@@ -106,7 +101,7 @@ class CameraState extends State<Camera> {
                     // Pass the automatically generated path to
                     // the DisplayPictureScreen widget.
                     imagePath: image.path,
-                    imageText: imageText,
+                    matchingText: matchingText,
                   ),
                 ),
               );
@@ -125,16 +120,16 @@ class CameraState extends State<Camera> {
 
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
-  final String imageText;
+  final String matchingText;
 
-  const DisplayPictureScreen({Key? key, required this.imagePath, required this.imageText})
+  const DisplayPictureScreen({Key? key, required this.imagePath, required this.matchingText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Display the Picture')),
-      body: Column(children: [Image.file(File(imagePath)), Text(imageText),])
+      body: Column(children: [Image.file(File(imagePath)), Text(matchingText),])
     );
   }
 }
