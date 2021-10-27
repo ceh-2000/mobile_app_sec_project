@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:mobile_app_sec_project/services/user_location.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'constants.dart';
 import 'filter.dart';
@@ -38,7 +39,7 @@ class _UserMap extends State<UserMap> {
   @override
   void initState() {
     super.initState();
-    getListOfBills(Constants.testUsername).then((List<String> bills){
+    getListOfBills((FirebaseAuth.instance.currentUser!).uid).then((List<String> bills){
       setState(() {
         _docIdSelected = bills[bills.length - 1];
       });

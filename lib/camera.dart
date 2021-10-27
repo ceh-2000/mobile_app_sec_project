@@ -4,6 +4,10 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:mobile_app_sec_project/services/cloud_storage.dart';
+import 'package:mobile_app_sec_project/services/user_location.dart';
+import 'package:mobile_app_sec_project/services/local_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // credit: https://flutter.dev/docs/cookbook/plugins/picture-using-camera
 class Camera extends StatefulWidget {
@@ -94,6 +98,10 @@ class CameraState extends State<Camera> {
 
               // save resources
               textDetector.close();
+
+              // Upload serial number
+              uploadBillLocation(matchingText, await getUserLocation());
+              writeBillContent((FirebaseAuth.instance.currentUser!).uid, matchingText);
 
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
