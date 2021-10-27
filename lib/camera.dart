@@ -76,6 +76,7 @@ class CameraState extends State<Camera> {
               final image = await _controller.takePicture();
 
               // Process text in image
+              // Source: https://pub.dev/packages/google_ml_kit
               final inputImage = InputImage.fromFilePath(image.path);
               final textDetector = GoogleMlKit.vision.textDetector();
               final RecognisedText recognisedText = await textDetector.processImage(inputImage);
