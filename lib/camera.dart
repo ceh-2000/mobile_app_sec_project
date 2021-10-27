@@ -116,7 +116,7 @@ class DisplayPictureScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Display the Picture')),
-      body: Column(children: [Image.file(File(imagePath)), Text(imageText.blocks.length.toString())]),
+      body: Column(children: [Image.file(File(imagePath)), Text(imageText.toString())]),
     );
   }
 }
