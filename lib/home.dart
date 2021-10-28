@@ -97,7 +97,7 @@ class _Home extends State<Home> {
                                 child: Container(
                                   padding: EdgeInsets.all(10.0),
                                   child:
-                                      Image.asset('assets/images/dollars.png'),
+                                      Image.asset('assets/images/logo_no_background.png'),
                                 ),
                               ),
                               Expanded(
@@ -115,7 +115,7 @@ class _Home extends State<Home> {
                                                   decoration: const InputDecoration(
                                                       border:
                                                           UnderlineInputBorder(),
-                                                      labelText: 'Username'),
+                                                      labelText: 'Email'),
                                                   maxLength: Constants
                                                       .maxUsernameLength,
                                                   validator: (value) {

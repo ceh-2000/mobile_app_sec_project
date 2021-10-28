@@ -44,10 +44,10 @@ flutter_launcher_name:
 flutter_icons:
   android: true
   ios: true
-  image_path_ios: 'assets/images/dollars.png'
-  image_path_android: 'assets/images/dollars.png'
+  image_path_ios: 'assets/images/logo.png'
+  image_path_android: 'assets/images/logo_no_background.png'
 
 # Generate splash screens: https://pub.dev/packages/flutter_native_splash
 flutter_native_splash:
-  color: '#ececec'
-  image: 'assets/images/dollars.png'
+  color: '#7c43bd'
+  image: 'assets/images/logo.png'

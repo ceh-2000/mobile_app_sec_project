@@ -71,14 +71,14 @@ class _UserMap extends State<UserMap> {
         markers.add(Marker(
           markerId: markerId,
           position: latLongPoints[i],
-          infoWindow: InfoWindow(title: 'Marker $i'),
+          infoWindow: InfoWindow(title: 'Location '+(i+1).toString()),
           icon: _pinLocationIcon!,
         ));
       } else {
         markers.add(Marker(
           markerId: markerId,
           position: latLongPoints[i],
-          infoWindow: InfoWindow(title: 'Marker $i'),
+          infoWindow: InfoWindow(title: 'Location '+(i+1).toString()),
         ));
       }
     }

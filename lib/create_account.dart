@@ -56,7 +56,7 @@ class _CreateAccount extends State<CreateAccount> {
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-                content: Text('We were unable create your account.')),
+                content: Text('We were unable create your account. Make sure to enter a valid email.')),
           );
         }
       } catch (e) {
@@ -100,7 +100,7 @@ class _CreateAccount extends State<CreateAccount> {
                                               decoration: const InputDecoration(
                                                   border:
                                                       UnderlineInputBorder(),
-                                                  labelText: 'Username'),
+                                                  labelText: 'Email'),
                                               maxLength:
                                                   Constants.maxUsernameLength,
                                               validator: (value) {
