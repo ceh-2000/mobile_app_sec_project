@@ -21,6 +21,7 @@ void main() async {
   final cameras = await availableCameras();
 
   // Write something to our bill file for testing purposes
+  // This is pre-loaded data to get a sense of how the app works
   await writeContent('');
   await writeBillContent('NHnNFmeU7lPhQhgtgxouoKvaOJx1', '54321');
   await writeBillContent('NHnNFmeU7lPhQhgtgxouoKvaOJx1', '12345');

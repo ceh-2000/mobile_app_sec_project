@@ -152,7 +152,7 @@ class _UserMap extends State<UserMap> {
                           builder: (BuildContext dialogContext) {
                             return Filter(docIdsSelected: _docIdSelected);
                           },
-                        );
+                        ) ?? _docIdSelected;
                         setState(() {
                           _docIdSelected = newBillId;
                           _mapMarkers = _createMarkerList(snapshot);

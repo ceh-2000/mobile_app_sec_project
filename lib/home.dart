@@ -106,10 +106,11 @@ class _Home extends State<Home> {
                                       padding: EdgeInsets.all(10.0),
                                       child: Form(
                                           key: _formKey,
-                                          child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
+                                          child: SingleChildScrollView(
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
                                                 TextFormField(
                                                   decoration: const InputDecoration(
                                                       border:
@@ -190,7 +191,7 @@ class _Home extends State<Home> {
                                                               TextDecoration
                                                                   .underline,
                                                         )))
-                                              ]))))
+                                              ])))))
                             ]))))));
   }
 }

@@ -21,11 +21,8 @@ class _CreateAccount extends State<CreateAccount> {
   String _password = '';
   String _passwordConfirm = '';
 
-
   @override
-  void initState() {
-  }
-
+  void initState() {}
 
   _CreateAccount() {}
 
@@ -36,7 +33,8 @@ class _CreateAccount extends State<CreateAccount> {
       try {
         FirebaseAuth auth = FirebaseAuth.instance;
 
-        UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        UserCredential userCredential =
+            await auth.createUserWithEmailAndPassword(
                 email: _username, password: _password);
 
         // If this succeeds, user's account is created AND user is logged in
@@ -55,10 +53,10 @@ class _CreateAccount extends State<CreateAccount> {
             const SnackBar(
                 content: Text('The account already exists for that email.')),
           );
-        }
-        else{
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('We were unable create your account.')),
+            const SnackBar(
+                content: Text('We were unable create your account.')),
           );
         }
       } catch (e) {
@@ -92,10 +90,11 @@ class _CreateAccount extends State<CreateAccount> {
                                   padding: EdgeInsets.all(10.0),
                                   child: Form(
                                       key: _formKey,
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
+                                      child: SingleChildScrollView(
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
                                             // TODO: Create stipulations on username (i.e. 8 characters, letters and numbers, symbols)
                                             TextFormField(
                                               decoration: const InputDecoration(
@@ -178,7 +177,7 @@ class _CreateAccount extends State<CreateAccount> {
                                                 child: const Text('Submit'),
                                               ),
                                             ),
-                                          ]))))
+                                          ])))))
                         ])))));
   }
 }
