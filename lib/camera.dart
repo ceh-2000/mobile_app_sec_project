@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:mobile_app_sec_project/services/cloud_storage.dart';
-import 'package:mobile_app_sec_project/services/user_location.dart';
-import 'package:mobile_app_sec_project/services/local_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+import 'home.dart';
+import 'services/process_image.dart';
+import 'display_image.dart';
 
 // credit: https://flutter.dev/docs/cookbook/plugins/picture-using-camera
 class Camera extends StatefulWidget {
@@ -33,6 +31,21 @@ class CameraState extends State<Camera> {
     _initializeControllerFuture = _controller.initialize();
   }
 
+  void _signOut() async {
+    final _firebaseAuth = FirebaseAuth.instance;
+
+    print('Trying to log out user.');
+    final User? user = _firebaseAuth.currentUser;
+    if (user == null) {
+      return;
+    }
+
+    await _firebaseAuth.signOut();
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => Home(cameras: widget.cameras)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -46,7 +59,7 @@ class CameraState extends State<Camera> {
               icon: const Icon(Icons.logout),
               tooltip: 'Logout',
               onPressed: () {
-                Navigator.pop(context);
+                _signOut();
               },
             ),
           ],
@@ -63,12 +76,9 @@ class CameraState extends State<Camera> {
             }
           },
         ),
-
-
         floatingActionButton: FloatingActionButton(
           // Provide an onPressed callback.
           onPressed: () async {
-
             // Take the Picture in a try / catch block. If anything goes wrong,
             // catch the error.
             try {
@@ -79,29 +89,8 @@ class CameraState extends State<Camera> {
               // where it was saved.
               final image = await _controller.takePicture();
 
-              // Process text in image
-              // Source: https://pub.dev/packages/google_ml_kit
-              final inputImage = InputImage.fromFilePath(image.path);
-              final textDetector = GoogleMlKit.vision.textDetector();
-              final RecognisedText recognisedText = await textDetector.processImage(inputImage);
-
-              // Extract text
-              String imageText = recognisedText.text;
-              RegExp exp = RegExp(r"[A-NP-Y]?[A-L]\s?\d{8}\s?[A-NP-Y]?"); // identify bill serial number https://www.moneyfactory.gov/resources/serialnumbers.html
-              Iterable<RegExpMatch> matches = exp.allMatches(imageText); // source https://stackoverflow.com/questions/27545081/best-way-to-get-all-substrings-matching-a-regexp-in-dart
-              String longest = "";
-              matches.forEach((match) => ((match.group(0) ?? "").length > longest.length) ? longest = (match.group(0) ?? "") : null); // store the longest segment of matched text
-              if (longest == "") {
-                longest = "Serial number not found"; // message for if serial not found
-              }
-              String matchingText = longest.replaceAll(' ', ''); // strip white space for consistency across scans
-
-              // save resources
-              textDetector.close();
-
-              // Upload serial number
-              uploadBillLocation(matchingText, await getUserLocation());
-              writeBillContent((FirebaseAuth.instance.currentUser!).uid, matchingText);
+              // Use the process_image service to pull out the serial number
+              String matchingText = await getSerialNumber(image);
 
               // If the picture was taken, display it on a new screen.
               await Navigator.of(context).push(
@@ -115,7 +104,6 @@ class CameraState extends State<Camera> {
                 ),
               );
             } catch (e) {
-
               // If an error occurs, log the error to the console.
               print(e);
             }
@@ -123,22 +111,6 @@ class CameraState extends State<Camera> {
           child: const Icon(Icons.camera_alt),
         ),
       ),
-    );
-  }
-}
-
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-  final String matchingText;
-
-  const DisplayPictureScreen({Key? key, required this.imagePath, required this.matchingText})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      body: Column(children: [Image.file(File(imagePath)), Text(matchingText),])
     );
   }
 }

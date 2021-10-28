@@ -29,4 +29,6 @@ Future<void> uploadBillLocation(String bill_id, LocationData? loc_data) async {
           'bill_id': FieldValue.arrayUnion([GeoPoint(loc_data.latitude ?? 0, loc_data.longitude ?? 0)])
         });
   }
+
+  print("Done uploading.");
 }

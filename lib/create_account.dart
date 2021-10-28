@@ -46,7 +46,6 @@ class _CreateAccount extends State<CreateAccount> {
               builder: (context) => MapCamNavigator(cameras: widget.cameras)),
         );
       } on FirebaseAuthException catch (e) {
-        print('hELLLLOOO'+e.toString());
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('The password provided is too weak.')),
@@ -55,6 +54,11 @@ class _CreateAccount extends State<CreateAccount> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text('The account already exists for that email.')),
+          );
+        }
+        else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('We were unable create your account.')),
           );
         }
       } catch (e) {

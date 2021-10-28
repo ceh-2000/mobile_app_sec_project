@@ -41,6 +41,6 @@ class Constants {
   static const maxPasswordLength = 50;
 
   //////////////////// String constants
-  static const testUsername = 'test';
+  static const testUsername = 'test@test.com';
 
 }

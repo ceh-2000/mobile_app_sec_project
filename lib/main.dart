@@ -21,10 +21,9 @@ void main() async {
   final cameras = await availableCameras();
 
   // Write something to our bill file for testing purposes
-  // TODO: Write this bill id when a picture of the bill is taken and the ID is extracted
   await writeContent('');
-  await writeBillContent(Constants.testUsername, '54321');
-  await writeBillContent(Constants.testUsername, '12345');
+  await writeBillContent('NHnNFmeU7lPhQhgtgxouoKvaOJx1', '54321');
+  await writeBillContent('NHnNFmeU7lPhQhgtgxouoKvaOJx1', '12345');
 
   // Start rendering the UI
   runApp(MyApp(cameras: cameras)); // MyApp used to be const here
@@ -42,55 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Constants.kToDark,
       ),
-      home: MyHomePage(
-          title: 'Home', cameras: cameras), // MyHomePage used to be const
+      home: Home(cameras: cameras), // MyHomePage used to be const
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title, required this.cameras})
-      : super(key: key);
-  final String title;
-  final List<CameraDescription> cameras;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Initial Screen'),
-        ),
-        body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Home(cameras: widget.cameras)),
-                  );
-                },
-                child: const Text('Home'),
-              ),
-              const SizedBox(height: 30),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            MapCamNavigator(cameras: widget.cameras)),
-                  );
-                },
-                child: const Text('Camera/Map'),
-              ),
-            ])));
   }
 }

@@ -69,7 +69,7 @@ Future<List<String>> getListOfBills(String username) async {
       }
     });
 
-    return listOfBillIds;
+    return listOfBillIds.toSet().toList();
   } catch (e) {
     // If there is an error reading, return a default String
     return ['Error'];

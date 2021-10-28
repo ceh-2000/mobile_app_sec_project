@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app_sec_project/services/local_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'constants.dart';
 
 class Filter extends StatefulWidget {
   final String docIdsSelected;
@@ -25,7 +24,6 @@ class _Filter extends State<Filter> {
   void initState() {}
 
   _Filter(docIdsSelected) {
-    // TODO: Change this username to the user id pulled from authentication
     getListOfBills((FirebaseAuth.instance.currentUser!).uid).then((List<String> bills){
       setState(() {
         _docIdsAll = bills;

@@ -41,7 +41,9 @@ class _UserMap extends State<UserMap> {
     super.initState();
     getListOfBills((FirebaseAuth.instance.currentUser!).uid).then((List<String> bills){
       setState(() {
-        _docIdSelected = bills[bills.length - 1];
+        if(bills.length-1 >= 0){
+          _docIdSelected = bills[bills.length - 1];
+        }
       });
     });
   }
