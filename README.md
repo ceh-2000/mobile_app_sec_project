@@ -1,5 +1,5 @@
 # Follow the Money 
-## Created for Mobile App Security class (CSCI 445 @ W&M)
+## Created for Mobile App Security class (CSCI 445 @ W&M, Fall 2021)
 
 ### Application Overview
 Follow the Money allows users to track their paper money. Simply make an account and you'll be able to upload and track dollar bills. Simply scan a bill and put it back into circulation. You'll be able to see other locations where that bill has also been scanned!
@@ -27,9 +27,9 @@ Once you have logged a bill, you can view any previous locations where that bill
 Begin by making an account. To make an account, click "Home" then "Create new account." Enter an email and password (and confirm the password), and click submit. You must enter a valid email and a password with at least six characters.
 
 #### Log into an Existing Account
-To log into an existing account, enter the email and password you entered earlier when you created an account OR enter the following credentials:
-```Username: test@test.com```
-```Password: password```
+To log into an existing account, enter the email and password you entered earlier when you created an account OR enter the following credentials:      
+```Username: test@test.com```    
+```Password: password```   
 
 We have added some dummy data associated with this account to your local device on app startup, so two additional bills should be available when you filter from the map screen.
 
